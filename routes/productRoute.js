@@ -3,7 +3,9 @@ const route= express.Router()
 
 const {uploadProduct, getAllProducts} = require("../controller/productController.js")
 
-route.post("/upload/:userId", uploadProduct) 
+const upload= require("../config/multer.js")
+
+route.post("/upload/:userId", upload.single("image"), uploadProduct) 
 //It will require the param in P.controller so it must be the same spelling (UserId)
 route.get("/getall", getAllProducts)
 

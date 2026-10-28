@@ -1,7 +1,13 @@
+// import "dotenv/config" MJS, using CJS,
+require ("dotenv").config()
+
+
 // import express from  "express"
 //To import using CJS,
 const express= require("express")
 const mongoose= require("mongoose")
+
+
 
 const userRoute= require("./routes/userRoutes.js") //after setting up your routes
 const productRoute= require ("./routes/productRoute.js")
@@ -10,8 +16,8 @@ const productRoute= require ("./routes/productRoute.js")
 const app=express()
 const port=3000;
 
-const compass_string="mongodb://localhost:27017/cohort8_db"
-const atlas_string= "mongodb+srv://Oluwatomisin:Tomisin%4022@cluster0.epnpmpi.mongodb.net/cohort8?appName=Cluster0"
+const compass_string=process.env.COMPASS_STRING
+const atlas_string= process.env.ATLAS_STRING
 
 mongoose.connect(atlas_string)
 .then(()=> console.log('MongoDB Connected!'))

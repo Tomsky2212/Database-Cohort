@@ -1,12 +1,16 @@
 const productModel= require ("../model/productModel.js")
 const userModel= require ("../model/userModel.js")
 
+const cloudinary= require("../config/cloudinary.js")
+
 
 //*CREATE/ UPLOAD PRODUCT
 // GET ALL
 // GET ONE
 // UPDATE : UPDATE PRODUCT (Stock)
 // DELETE
+
+
 
 //*CREATE/ UPLOAD PRODUCT
 const uploadProduct= async(req,res) =>{
@@ -20,7 +24,18 @@ const uploadProduct= async(req,res) =>{
                 message: "User not found"
             })
         }
-        const product=await productModel.create({name,description,price,category,stock,quantity,image})
+
+        //Let's check if a file has been uploaded
+        if (!req.file) {
+            return res.status(400).json({ message: "image is required...please upload an image"})
+        }
+
+        const result= await cloudinary.uploader.upload(req.file.path)
+        const imageUrl = result.secure_url
+
+
+
+        const product=await productModel.create({name,description,price,category,stock,quantity,image:imageUrl})
 
         await getUserID.products.push(product._id) //push the id of the new created product into the user array(product array)
         await getUserID.save() //save the data
